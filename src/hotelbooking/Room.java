@@ -8,7 +8,7 @@ package hotelbooking;
  *
  * @author emort
  */
-public abstract class Room {
+public abstract class Room implements RoomType {
 
     private String roomNumber;
     private double price;
@@ -36,6 +36,7 @@ public abstract class Room {
         this.available = available;
     }
 
+    @Override
     public String bookingConfirmation(int nights) {
 
         return null;
