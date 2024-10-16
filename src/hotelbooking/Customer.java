@@ -20,10 +20,10 @@ public class Customer {
         this.name = name;
         this.phoneNumber = phoneNumber;
         if (isValidEmail(email)) {
-            this.email = email;
-        } else {
-            throw new IllegalArgumentException("Invalid email format.");
-        }
+        this.email = email;
+    } else {
+        this.email = "";  // Set default email or leave it empty
+    }
     }
 
     public String getName() {
