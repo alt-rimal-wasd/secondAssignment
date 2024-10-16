@@ -17,14 +17,15 @@ public class Customer {
     private String email;
 
     public Customer(String name, String phoneNumber, String email) {
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        if (isValidEmail(email)) {
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+    if (isValidEmail(email)) {
         this.email = email;
     } else {
-        this.email = "";  // Set default email or leave it empty
+        System.out.println("Warning: Invalid email format for " + name + ". Email skipped.");
+        this.email = "unknown@example.com";  // Set default email or leave it empty
     }
-    }
+}
 
     public String getName() {
         return name;
@@ -37,11 +38,11 @@ public class Customer {
     public String getEmail() {
         return email;
     }
-    
+
     // got help from chatGPT to validate email format. 
-    private boolean isValidEmail(String email) {
+    public static boolean isValidEmail(String email) {
         String emailRegex = "^[\\w-\\.]+@[\\w-]+\\.[a-z]{2,3}$";
-        return Pattern.compile(emailRegex).matcher(email).matches();
+        return Pattern.compile(emailRegex, Pattern.CASE_INSENSITIVE).matcher(email).matches();
     }
 
 }

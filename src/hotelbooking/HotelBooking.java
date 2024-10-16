@@ -58,7 +58,12 @@ public class HotelBooking {
                             System.out.print("Enter your name: ");
                             String name = scanner.nextLine().toUpperCase();
                             System.out.print("Enter your email: ");
-                            String email = scanner.nextLine().toUpperCase();
+                            String email = scanner.nextLine();
+                            if (Customer.isValidEmail(email)) {
+                                customer = new Customer(name, phoneNumber, email);
+                            } else {
+                                System.out.println("Invalid email format.");
+                            }
                             customer = new Customer(name, phoneNumber, email);
                             customerMap.put(phoneNumber, customer);
                             fileManager.writeCustomerInfo((HashMap<String, Customer>) customerMap);
