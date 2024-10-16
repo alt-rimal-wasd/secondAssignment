@@ -40,8 +40,12 @@ public class HotelBooking {
             boolean isReturningCustomer = false;
             // Process returning customers
             if (response.equalsIgnoreCase("yes")) {
-                System.out.print("Please enter your phone number: ");
+                System.out.print("Please enter your phone number (or type 'quit' to exit): ");
                 phoneNumber = scanner.nextLine();
+                if (phoneNumber.equalsIgnoreCase("quit")) {
+                    System.out.println("Thank you for visiting. Goodbye!");
+                    return;
+                }
                 customer = customerMap.get(phoneNumber);
 
                 if (customer != null) {
@@ -52,17 +56,33 @@ public class HotelBooking {
                     // Prompt to continue as a new customer if not found
                     System.out.println("Phone number not found.");
                     while (true) {
-                        System.out.print("Would you like to continue as a new customer (yes/no)? ");
+                        System.out.print("Would you like to continue as a new customer (yes/no or type 'quit' to exit)? ");
                         String newCustomerResponse = scanner.nextLine().trim();
+                        if (newCustomerResponse.equalsIgnoreCase("quit")) {
+                            System.out.println("Thank you for visiting. Goodbye!");
+                            return;
+                        }
                         if (newCustomerResponse.equalsIgnoreCase("yes")) {
-                            System.out.print("Enter your name: ");
+                            System.out.print("Enter your name (or type 'quit' to exit): ");
                             String name = scanner.nextLine().toUpperCase();
-                            System.out.print("Enter your email: ");
-                            String email = scanner.nextLine();
-                            if (Customer.isValidEmail(email)) {
-                                customer = new Customer(name, phoneNumber, email);
-                            } else {
-                                System.out.println("Invalid email format.");
+                            if (name.equalsIgnoreCase("quit")) {
+                                System.out.println("Thank you for visiting. Goodbye!");
+                                return;
+                            }
+
+                            String email;
+                            while (true) {
+                                System.out.print("Enter your email (or type 'quit' to exit): ");
+                                email = scanner.nextLine();
+                                if (email.equalsIgnoreCase("quit")) {
+                                    System.out.println("Thank you for visiting. Goodbye!");
+                                    return;
+                                }
+                                if (Customer.isValidEmail(email)) {
+                                    break; // Valid email, exit loop
+                                } else {
+                                    System.out.println("Invalid email format. Please enter a valid email.");
+                                }
                             }
                             customer = new Customer(name, phoneNumber, email);
                             customerMap.put(phoneNumber, customer);
@@ -79,20 +99,36 @@ public class HotelBooking {
             }
             // Process new customers
             if (customer == null && phoneNumber == null) {
-                System.out.print("Enter your name: ");
+                System.out.print("Enter your name (or type 'quit' to exit): ");
                 String name = scanner.nextLine().toUpperCase();
-                System.out.print("Enter your phone number: ");
+                if (name.equalsIgnoreCase("quit")) {
+                    System.out.println("Thank you for visiting. Goodbye!");
+                    return;
+                }
+
+                System.out.print("Enter your phone number (or type 'quit' to exit): ");
                 phoneNumber = scanner.nextLine();
+                if (phoneNumber.equalsIgnoreCase("quit")) {
+                    System.out.println("Thank you for visiting. Goodbye!");
+                    return;
+                }
+
                 if (customerMap.containsKey(phoneNumber)) {
                     System.out.println("Phone number already exists in the system. Please check your number or contact support.");
                 } else {
-                    System.out.print("Enter your email: ");
+                    System.out.print("Enter your email (or type 'quit' to exit): ");
                     String email = scanner.nextLine().toUpperCase();
+                    if (email.equalsIgnoreCase("quit")) {
+                        System.out.println("Thank you for visiting. Goodbye!");
+                        return;
+                    }
+
                     customer = new Customer(name, phoneNumber, email);
                     customerMap.put(phoneNumber, customer);
                     fileManager.writeCustomerInfo(new HashMap<>(customerMap));
                 }
             }
+
             // Get booking details
             int nights = 0;
             int roomTypeChoice = 0;
