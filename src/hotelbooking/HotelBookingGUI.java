@@ -22,8 +22,7 @@ public class HotelBookingGUI {
         customerMap = fileManager.readCustomerInfo();
         roomsMap = fileManager.readRoomsFromFile();
         loadBackgroundImage();
-
-        // Set up the main frame
+        
         frame = new JFrame("Hotel Booking");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(new BackgroundPanel()); // Use the custom BackgroundPanel
