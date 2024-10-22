@@ -14,20 +14,15 @@ import javax.swing.*;
 
 public class BGPanel extends JPanel {
 
-    public Image image;
+    private Image image;
 
     public BGPanel() {
-        this.image = new ImageIcon("./resources/T06_bg.jpg").getImage();
+        this.image = new ImageIcon("./resources/hotel_image.jpg").getImage(); // You can replace with your own background image
     }
 
-    /**
-     * Draw the background of this panel.
-     *
-     * @param g
-     */
     @Override
-    public void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(this.image, 0, 0, null);
+        g.drawImage(this.image, 0, 0, getWidth(), getHeight(), this);
     }
 }
