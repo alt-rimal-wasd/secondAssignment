@@ -196,7 +196,7 @@ public class HotelBookingGUI extends JFrame implements ActionListener {
         formPanel.revalidate();
         formPanel.repaint();
     }
-
+//
     private void handleBooking() {
         String roomType = this.roomTypeComboBox.getSelectedItem().toString();
         int nights = Integer.parseInt(this.nightsField.getText());
