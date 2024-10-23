@@ -1,202 +1,220 @@
 package hotelbooking;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.Map;
+import javax.swing.*;
 
-public class HotelBookingGUI extends JFrame {
-    private JTextField nameField, phoneNumberField, emailField, nightsField;
-    private JComboBox<String> roomTypeBox;
-    private JButton bookButton;
-    private JLabel statusLabel;
-    
-    private Map<String, Customer> customerMap = fileManager.readCustomerInfo();
-    private HashMap<String, Room> roomsMap = fileManager.readRoomsFromFile();
+public class HotelBookingGUI extends JFrame implements ActionListener {
+    private JButton startButton;
+    private JTextField phoneField;
+    private JButton returningCustomerButton;
+    private JButton newCustomerButton;
+    private JTextField nameField;
+    private JTextField emailField;
+    private JComboBox<String> roomTypeComboBox;
+    private JTextField nightsField;
+    private JLabel textLabel;
+    private BookingHandler bookingHandler;
+    private JPanel formPanel;
+    private BGPanel centerPanel;
+    private Customer currentCustomer;
 
     public HotelBookingGUI() {
-        setTitle("Hotel Booking System");
-        setSize(500, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);  // Center the frame
+        this.bookingHandler = new BookingHandler();
+        initComponents();
+        initPanels();
+        initActionListener();
+    }
 
-        // Create panel for input fields
-        JPanel panel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+    public void initComponents() {
+        this.startButton = new JButton("START");
+        this.textLabel = new JLabel("Hotel Booking System");
+        this.textLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        this.setSize(600, 600);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setLocationRelativeTo(null);
+    }
 
-        // Create fields for input
-        JLabel phoneLabel = new JLabel("Phone Number:");
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        panel.add(phoneLabel, gbc);
+    public void initPanels() {
+        // Create and configure the north panel for the title
+        JPanel northPanel = new JPanel();
+        northPanel.add(this.textLabel);
+        this.add(northPanel, BorderLayout.NORTH);
 
-        phoneNumberField = new JTextField(20);
-        gbc.gridx = 1;
-        panel.add(phoneNumberField, gbc);
+        // Center panel using BGPanel
+        centerPanel = new BGPanel();
+        centerPanel.setLayout(new BorderLayout());
+        this.add(centerPanel, BorderLayout.CENTER);
+
+        // Add the start button in the south panel
+        JPanel southPanel = new JPanel();
+        southPanel.add(startButton);
+        this.add(southPanel, BorderLayout.SOUTH);
+
+        // Form Panel for customer details, initially hidden
+        this.formPanel = new JPanel();
+        this.formPanel.setLayout(new BoxLayout(this.formPanel, BoxLayout.Y_AXIS));
+        this.formPanel.setOpaque(false); // Make it transparent
+        this.formPanel.setPreferredSize(new Dimension(400, 300)); // Add preferred size
+
+        // Ensure uniform alignment and size for form components
+        formPanel.setAlignmentX(CENTER_ALIGNMENT);
+
+        JLabel phoneLabel = new JLabel("Phone:");
+        this.phoneField = new JTextField(20);
+        this.returningCustomerButton = new JButton("Returning Customer");
+        this.newCustomerButton = new JButton("New Customer");
+
+        // Align components to center
+        phoneLabel.setAlignmentX(CENTER_ALIGNMENT);
+        phoneField.setAlignmentX(CENTER_ALIGNMENT);
+        returningCustomerButton.setAlignmentX(CENTER_ALIGNMENT);
+        newCustomerButton.setAlignmentX(CENTER_ALIGNMENT);
+
+        // Set uniform size for text fields and buttons
+        phoneField.setMaximumSize(new Dimension(200, 30));
+        returningCustomerButton.setMaximumSize(new Dimension(200, 30));
+        newCustomerButton.setMaximumSize(new Dimension(200, 30));
+
+        formPanel.add(phoneLabel);
+        formPanel.add(phoneField);
+        formPanel.add(returningCustomerButton);
+        formPanel.add(newCustomerButton);
+
+        formPanel.setVisible(false);
+        centerPanel.add(formPanel, BorderLayout.CENTER);
+
+        // Event listeners for customer buttons
+        returningCustomerButton.addActionListener(e -> handleReturningCustomer());
+        newCustomerButton.addActionListener(e -> handleNewCustomer());
+    }
+
+    public void initActionListener() {
+        this.startButton.addActionListener(this);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == this.startButton) {
+            this.formPanel.setVisible(true);
+            this.startButton.setEnabled(false);
+        }
+    }
+
+    private void handleReturningCustomer() {
+        String phone = this.phoneField.getText();
+        currentCustomer = bookingHandler.getCustomerMap().get(phone);
+
+        if (currentCustomer != null) {
+            JOptionPane.showMessageDialog(this, "Welcome back, " + currentCustomer.getName() + "! You qualify for a complimentary spa session.", "Returning Customer", JOptionPane.INFORMATION_MESSAGE);
+            showBookingForm();
+        } else {
+            JOptionPane.showMessageDialog(this, "Phone number not found. Please continue as a new customer.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void handleNewCustomer() {
+        String phone = this.phoneField.getText();
+        if (bookingHandler.getCustomerMap().containsKey(phone)) {
+            JOptionPane.showMessageDialog(this, "Phone number already exists. Please check your number or contact support.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         JLabel nameLabel = new JLabel("Name:");
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        panel.add(nameLabel, gbc);
-
-        nameField = new JTextField(20);
-        gbc.gridx = 1;
-        panel.add(nameField, gbc);
-
+        this.nameField = new JTextField(20);
         JLabel emailLabel = new JLabel("Email:");
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        panel.add(emailLabel, gbc);
+        this.emailField = new JTextField(20);
 
-        emailField = new JTextField(20);
-        gbc.gridx = 1;
-        panel.add(emailField, gbc);
+        // Align components to center
+        nameLabel.setAlignmentX(CENTER_ALIGNMENT);
+        nameField.setAlignmentX(CENTER_ALIGNMENT);
+        emailLabel.setAlignmentX(CENTER_ALIGNMENT);
+        emailField.setAlignmentX(CENTER_ALIGNMENT);
 
-        JLabel nightsLabel = new JLabel("Nights:");
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        panel.add(nightsLabel, gbc);
+        // Set uniform size for text fields
+        nameField.setMaximumSize(new Dimension(200, 30));
+        emailField.setMaximumSize(new Dimension(200, 30));
 
-        nightsField = new JTextField(5);
-        gbc.gridx = 1;
-        panel.add(nightsField, gbc);
+        formPanel.add(nameLabel);
+        formPanel.add(nameField);
+        formPanel.add(emailLabel);
+        formPanel.add(emailField);
+
+        JButton proceedButton = new JButton("Proceed");
+        formPanel.add(proceedButton);
+        proceedButton.setMaximumSize(new Dimension(200, 30));
+        proceedButton.setAlignmentX(CENTER_ALIGNMENT);
+        proceedButton.addActionListener(e -> {
+            String name = nameField.getText();
+            String email = emailField.getText();
+
+            if (!Customer.isValidEmail(email)) {
+                JOptionPane.showMessageDialog(this, "Invalid email format. Please enter a valid email.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            currentCustomer = new Customer(name, phone, email);
+            bookingHandler.addCustomer(currentCustomer);
+            showBookingForm();
+        });
+
+        formPanel.revalidate();
+        formPanel.repaint();
+    }
+
+    private void showBookingForm() {
+        formPanel.removeAll();
 
         JLabel roomTypeLabel = new JLabel("Room Type:");
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        panel.add(roomTypeLabel, gbc);
+        this.roomTypeComboBox = new JComboBox<>(new String[]{"Single", "Double", "Suite"});
+        JLabel nightsLabel = new JLabel("Nights:");
+        this.nightsField = new JTextField(5);
+        JButton bookButton = new JButton("Book Now");
 
-        roomTypeBox = new JComboBox<>(new String[] { "Single", "Double", "Suite" });
-        gbc.gridx = 1;
-        panel.add(roomTypeBox, gbc);
+        // Align components to center
+        roomTypeLabel.setAlignmentX(CENTER_ALIGNMENT);
+        roomTypeComboBox.setAlignmentX(CENTER_ALIGNMENT);
+        nightsLabel.setAlignmentX(CENTER_ALIGNMENT);
+        nightsField.setAlignmentX(CENTER_ALIGNMENT);
+        bookButton.setAlignmentX(CENTER_ALIGNMENT);
 
-        bookButton = new JButton("Book");
-        gbc.gridx = 1;
-        gbc.gridy = 5;
-        panel.add(bookButton, gbc);
+        // Set uniform sizes
+        roomTypeComboBox.setMaximumSize(new Dimension(200, 30));
+        nightsField.setMaximumSize(new Dimension(100, 30));
 
-        statusLabel = new JLabel();
-        gbc.gridx = 1;
-        gbc.gridy = 6;
-        panel.add(statusLabel, gbc);
+        formPanel.add(roomTypeLabel);
+        formPanel.add(roomTypeComboBox);
+        formPanel.add(nightsLabel);
+        formPanel.add(nightsField);
+        formPanel.add(bookButton);
 
-        add(panel);
+        bookButton.addActionListener(e -> handleBooking());
 
-        // Initial prompt to check if the customer is new or returning
-        int response = JOptionPane.showConfirmDialog(this, "Are you a returning customer?", "Customer Type", JOptionPane.YES_NO_OPTION);
-
-        // Adjust UI based on response
-        if (response == JOptionPane.YES_OPTION) {
-            // Returning customer: hide name and email fields
-            nameField.setVisible(false);
-            emailField.setVisible(false);
-            nameLabel.setVisible(false);
-            emailLabel.setVisible(false);
-        } else {
-            // New customer: hide phone number field initially
-            phoneNumberField.setVisible(false);
-            phoneLabel.setVisible(false);
-        }
-
-        // Handle the booking process on button click
-        bookButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                handleBooking(response == JOptionPane.YES_OPTION);
-            }
-        });
+        formPanel.revalidate();
+        formPanel.repaint();
     }
 
-    private void handleBooking(boolean isReturningCustomer) {
-        String phoneNumber = phoneNumberField.getText().trim();
-        String name = nameField.getText().trim();
-        String email = emailField.getText().trim();
-        int nights;
+    private void handleBooking() {
+        String roomType = this.roomTypeComboBox.getSelectedItem().toString();
+        int nights = Integer.parseInt(this.nightsField.getText());
 
-        try {
-            nights = Integer.parseInt(nightsField.getText().trim());
-        } catch (NumberFormatException e) {
-            statusLabel.setText("Invalid number of nights.");
-            return;
-        }
+        Booking booking = bookingHandler.createBooking(currentCustomer.getPhoneNumber(), roomType, nights);
 
-        int roomTypeChoice = roomTypeBox.getSelectedIndex() + 1; // 1 for Single, 2 for Double, 3 for Suite
-        Room selectedRoom = selectRoomByType(roomsMap, roomTypeChoice);
-
-        if (selectedRoom == null) {
-            statusLabel.setText("No available rooms of the selected type.");
-            return;
-        }
-
-        Customer customer = null;
-
-        // Check if the customer is returning
-        if (isReturningCustomer) {
-            customer = customerMap.get(phoneNumber);
-
-            if (customer != null) {
-                // Welcome back the customer
-                statusLabel.setText("Welcome back, " + customer.getName() + "! Complimentary spa session awaits.");
-            } else {
-                // Phone number not found for returning customer
-                statusLabel.setText("Phone number not found. Please enter as a new customer.");
-                return;
+        if (booking != null) {
+            JOptionPane.showMessageDialog(this, booking.confirmBooking(), "Booking Confirmation", JOptionPane.INFORMATION_MESSAGE);
+            if (currentCustomer != null) {
+                JOptionPane.showMessageDialog(this, "Check the reception to book your free spa session after you have checked in.", "Complimentary Spa", JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
-            // Handle new customer
-            if (name.isEmpty() || email.isEmpty()) {
-                statusLabel.setText("Please fill in all fields.");
-                return;
-            }
-            if (!Customer.isValidEmail(email)) {
-                statusLabel.setText("Invalid email format.");
-                return;
-            }
-
-            // Create new customer
-            customer = new Customer(name, phoneNumber, email);
-            customerMap.put(phoneNumber, customer);
-            fileManager.writeCustomerInfo((HashMap<String, Customer>) customerMap);
+            JOptionPane.showMessageDialog(this, "No available rooms of the selected type.", "Booking Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        // Create booking and confirm
-        Booking booking = new Booking(selectedRoom, customer, nights);
-        statusLabel.setText(booking.confirmBooking());
-
-        // Reset fields after booking
-        resetFields();
-    }
-
-    private void resetFields() {
-        nameField.setText("");
-        phoneNumberField.setText("");
-        emailField.setText("");
-        nightsField.setText("");
-        roomTypeBox.setSelectedIndex(0);
-    }
-
-    // Reuse the existing room selection logic
-    private Room selectRoomByType(HashMap<String, Room> roomsMap, int roomTypeChoice) {
-        return roomsMap.values().stream()
-                .filter(room -> {
-                    switch (roomTypeChoice) {
-                        case 1: return room instanceof SingleRoom;
-                        case 2: return room instanceof DoubleRoom;
-                        case 3: return room instanceof Suite;
-                        default: return false;
-                    }
-                })
-                .findFirst()
-                .orElse(null);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            HotelBookingGUI gui = new HotelBookingGUI();
-            gui.setVisible(true);
-        });
+        HotelBookingGUI cf = new HotelBookingGUI();
+        cf.setVisible(true);
     }
 }
