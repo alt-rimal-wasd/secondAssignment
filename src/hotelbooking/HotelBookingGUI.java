@@ -7,20 +7,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class HotelBookingGUI extends JFrame implements ActionListener {
-    private JButton startButton;
-    private JTextField phoneField;
-    private JButton returningCustomerButton;
-    private JButton newCustomerButton;
-    private JTextField nameField;
-    private JTextField emailField;
-    private JComboBox<String> roomTypeComboBox;
-    private JTextField nightsField;
-    private JLabel textLabel;
-    private BookingHandler bookingHandler;
-    private JPanel formPanel;
-    private BGPanel centerPanel;
-    private Customer currentCustomer;
+public final class HotelBookingGUI extends JFrame implements ActionListener {
+    public JButton startButton;
+    public JTextField phoneField;
+    public JButton returningCustomerButton;
+    public JButton newCustomerButton;
+    public JTextField nameField;
+    public JTextField emailField;
+    public JComboBox<String> roomTypeComboBox;
+    public JTextField nightsField;
+    public JLabel textLabel;
+    public BookingHandler bookingHandler;
+    public JPanel formPanel;
+    public BGPanel centerPanel;
+    public Customer currentCustomer;
 
     public HotelBookingGUI() {
         this.bookingHandler = new BookingHandler();
@@ -39,28 +39,28 @@ public class HotelBookingGUI extends JFrame implements ActionListener {
     }
 
     public void initPanels() {
-        // Create and configure the north panel for the title
+        // North Panel
         JPanel northPanel = new JPanel();
         northPanel.add(this.textLabel);
         this.add(northPanel, BorderLayout.NORTH);
 
-        // Center panel using BGPanel
+        // Center panel
         centerPanel = new BGPanel();
         centerPanel.setLayout(new BorderLayout());
         this.add(centerPanel, BorderLayout.CENTER);
 
-        // Add the start button in the south panel
+        // South Panel
         JPanel southPanel = new JPanel();
         southPanel.add(startButton);
         this.add(southPanel, BorderLayout.SOUTH);
 
-        // Form Panel for customer details, initially hidden
+        // Form Panel for customer details, initially hidden. got help from chat gpt
         this.formPanel = new JPanel();
         this.formPanel.setLayout(new BoxLayout(this.formPanel, BoxLayout.Y_AXIS));
         this.formPanel.setOpaque(false); // Make it transparent
-        this.formPanel.setPreferredSize(new Dimension(400, 300)); // Add preferred size
+        this.formPanel.setPreferredSize(new Dimension(400, 300));
 
-        // Ensure uniform alignment and size for form components
+        // Ensure uniform alignment and size for form components// got help from chat gpt
         formPanel.setAlignmentX(CENTER_ALIGNMENT);
 
         JLabel phoneLabel = new JLabel("Phone:");
@@ -87,7 +87,7 @@ public class HotelBookingGUI extends JFrame implements ActionListener {
         formPanel.setVisible(false);
         centerPanel.add(formPanel, BorderLayout.CENTER);
 
-        // Event listeners for customer buttons
+        // Event listeners for customer buttons. got help from chat gpt
         returningCustomerButton.addActionListener(e -> handleReturningCustomer());
         newCustomerButton.addActionListener(e -> handleNewCustomer());
     }
@@ -196,7 +196,7 @@ public class HotelBookingGUI extends JFrame implements ActionListener {
         formPanel.revalidate();
         formPanel.repaint();
     }
-//
+    
     private void handleBooking() {
         String roomType = this.roomTypeComboBox.getSelectedItem().toString();
         int nights = Integer.parseInt(this.nightsField.getText());
