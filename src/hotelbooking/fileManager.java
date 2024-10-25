@@ -120,4 +120,7 @@ public class fileManager {
         }
         return roomsMap;
     }
+
+    private fileManager() {
+    }
 }
