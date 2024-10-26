@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package project2;
 
 import Project1.Booking;
@@ -14,33 +10,33 @@ import Project1.fileManager;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- *
- * @author emort
- */
 public class BookingHandler {
-
     private Map<String, Customer> customerMap;
     private HashMap<String, Room> roomsMap;
 
+    // Constructor to initialize customer and room data
     public BookingHandler() {
         this.customerMap = fileManager.readCustomerInfo();
         this.roomsMap = fileManager.readRoomsFromFile();
     }
 
+    // Get the customer map
     public Map<String, Customer> getCustomerMap() {
         return customerMap;
     }
 
+    // Get the rooms map
     public HashMap<String, Room> getRoomsMap() {
         return roomsMap;
     }
 
+    // Add a customer to the customer map and update the file
     public void addCustomer(Customer customer) {
         customerMap.put(customer.getPhoneNumber(), customer);
         fileManager.writeCustomerInfo((HashMap<String, Customer>) customerMap);
     }
 
+    // Create a booking if the customer and room are valid and available
     public Booking createBooking(String phoneNumber, String roomType, int nights) {
         Customer customer = customerMap.get(phoneNumber);
         if (customer == null) {
@@ -55,6 +51,8 @@ public class BookingHandler {
         return null;
     }
 
+    // Select a room by type and check its availability
+    //got help from chat gpt 
     private Room selectRoomByType(String roomType) {
         return roomsMap.values().stream()
                 .filter(room -> {
@@ -73,5 +71,4 @@ public class BookingHandler {
                 .findFirst()
                 .orElse(null);
     }
-
 }
