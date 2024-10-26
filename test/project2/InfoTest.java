@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package project2;
 
 import java.sql.ResultSet;
@@ -10,10 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author emort
- */
 public class InfoTest {
 
     private Info info;
@@ -28,7 +20,7 @@ public class InfoTest {
     public void testConnectHotelDB() {
         assertNotNull("Info instance should be initialized", info);
     }
-
+//got help from co-pilot
     @Test
     public void testGetAvailableRooms() {
         ResultSet rs = info.getAvailableRooms();
