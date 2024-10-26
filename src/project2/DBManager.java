@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package project2;
 
 import java.sql.Connection;
@@ -10,12 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- *
- * @author emort
- */
 public class DBManager {
-
     private static DBManager instance;
     private Connection conn;
     private static final String URL = "jdbc:derby://localhost:1527/project2;create=true";
@@ -37,10 +28,11 @@ public class DBManager {
         return this.conn;
     }
 
+    // Establish connection
     private void establishConnection() {
         if (this.conn == null) {
             try {
-                Class.forName("org.apache.derby.jdbc.ClientDriver"); // Load the Derby driver
+                Class.forName("org.apache.derby.jdbc.ClientDriver");// got help from chat gpt
                 conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
                 System.out.println(URL + " connected successfully.");
             } catch (ClassNotFoundException ex) {
