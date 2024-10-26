@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package project2;
 
 import java.sql.Connection;
@@ -11,10 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author emort
- */
 public class DBManagerTest {
 
     private DBManager dbManager;
@@ -29,7 +21,7 @@ public class DBManagerTest {
         Connection conn = dbManager.getConnection();
         assertNotNull("Connection should be established", conn);
     }
-
+// got help from co-pilot
     @Test
     public void testQueryDB() {
         Connection conn = dbManager.getConnection();
