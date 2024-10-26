@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package project2;
 
 import java.sql.Connection;
@@ -10,12 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/**
- *
- * @author emort
- */
 public class Info {
-
     private final DBManager dbManager;
     private final Connection conn;
     private Statement statement;
@@ -25,6 +16,7 @@ public class Info {
         conn = dbManager.getConnection();
     }
 
+    // Connect and set up the Hotel DB
     public void connectHotelDB() {
         try {
             this.statement = conn.createStatement();
@@ -38,6 +30,7 @@ public class Info {
         }
     }
 
+    // Check if table exists and drop it if it does
     private void dropTablesIfExists(String tableName) throws SQLException {
         DatabaseMetaData dbmd = this.conn.getMetaData();
         ResultSet rs = dbmd.getTables(null, null, tableName.toUpperCase(), null);
@@ -47,14 +40,15 @@ public class Info {
         }
     }
 
+    // Create ROOM and CUSTOMER tables
     private void createTables() throws SQLException {
         this.statement.executeUpdate("CREATE TABLE ROOM (ROOMID VARCHAR(20) PRIMARY KEY, TYPE VARCHAR(20), PRICE FLOAT, AVAILABLE BOOLEAN)");
         this.statement.executeUpdate("CREATE TABLE CUSTOMER (CUSTOMERID VARCHAR(20) PRIMARY KEY, NAME VARCHAR(50), PHONE VARCHAR(20), EMAIL VARCHAR(50))");
     }
 
+    // Insert room data into the ROOM table
     private void insertRoomData() throws SQLException {
         conn.setAutoCommit(false); // Start transaction
-
         try {
             String[] roomInserts = {
                 "('s001', 'Single', 100.0, TRUE)",
@@ -88,11 +82,9 @@ public class Info {
                 "('suite009', 'Suite', 250.0, TRUE)",
                 "('suite010', 'Suite', 250.0, TRUE)"
             };
-
             for (String roomInsert : roomInserts) {
                 this.statement.executeUpdate("INSERT INTO ROOM VALUES " + roomInsert);
             }
-
             conn.commit(); // Commit transaction
         } catch (SQLException ex) {
             conn.rollback(); // Rollback transaction if any errors occur
@@ -102,9 +94,9 @@ public class Info {
         }
     }
 
+    // Insert customer data into the CUSTOMER table
     private void insertCustomerData() throws SQLException {
         conn.setAutoCommit(false); // Start transaction
-
         try {
             String[] customerInserts = {
                 "('c001', 'MATT', '0211111113', 'MATT_BRADLEY@EMAIL.COM')",
@@ -121,7 +113,6 @@ public class Info {
             for (String customerInsert : customerInserts) {
                 this.statement.executeUpdate("INSERT INTO CUSTOMER VALUES " + customerInsert);
             }
-
             conn.commit(); // Commit transaction
         } catch (SQLException ex) {
             conn.rollback(); // Rollback transaction if any errors occur
@@ -131,6 +122,7 @@ public class Info {
         }
     }
 
+    // Retrieve available rooms
     public ResultSet getAvailableRooms() {
         ResultSet rs = null;
         try {
@@ -141,6 +133,7 @@ public class Info {
         return rs;
     }
 
+    // Check if a table exists and drop it
     private void checkExistedTable(String name) {
         try {
             DatabaseMetaData dbmd = this.conn.getMetaData();
@@ -154,6 +147,7 @@ public class Info {
         }
     }
 
+    // Close the database connection
     public void closeConnection() {
         this.dbManager.closeConnections();
     }
