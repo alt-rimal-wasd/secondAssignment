@@ -1,25 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package project2;
 
-/**
- *
- * @author emort
- */
 import java.awt.Graphics;
 import java.awt.Image;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JPanel;
 
 public class BGPanel extends JPanel {
-
     private Image image;
 
+    // Constructor to load the background image
     public BGPanel() {
-        this.image = new ImageIcon("./resources/hotel_image.jpg").getImage(); // You can replace with your own background image
+        this.image = new ImageIcon("./resources/hotel_image.jpg").getImage(); // Replace with your background image
     }
 
+    // Draw the background image
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
