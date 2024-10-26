@@ -9,6 +9,7 @@ package Project1;
  * @author emort
  */
 public interface RoomType {
+
     String bookingConfirmation(int nights);
-    
+
 }

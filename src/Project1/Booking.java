@@ -23,6 +23,7 @@ public class Booking {
         this.customer = customer;
         this.nights = nights;
     }
+
     public Room getRoom() {
         return room;
     }
@@ -34,11 +35,13 @@ public class Booking {
     public int getNights() {
         return nights;
     }
+
     // Confirm the booking by marking the room as unavailable and returning the confirmation message
     public String confirmBooking() {
         room.setAvailable(false);
         return room.bookingConfirmation(nights);
     }
+
     // got help from chat gpt to assign ramdom room numbers from available rooms
     // Assign a random room from the list that is available
     public static Room assignRoom(List<Room> rooms) {

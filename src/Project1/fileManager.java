@@ -23,6 +23,7 @@ import java.util.HashMap;
  * @author emort
  */
 public class fileManager {
+
     // Read customer information from file and return as a map
     public static HashMap<String, Customer> readCustomerInfo() {
         HashMap<String, Customer> customerMap = new HashMap();
@@ -58,6 +59,7 @@ public class fileManager {
         }
         return customerMap;
     }
+
     // Read customer information from file and return as a map
     public static void writeCustomerInfo(HashMap<String, Customer> customerMap) {
         PrintWriter pw = null;
@@ -74,6 +76,7 @@ public class fileManager {
             }
         }
     }
+
     // Read room information from file and return as a map
     public static HashMap<String, Room> readRoomsFromFile() {
         HashMap<String, Room> roomsMap = new HashMap();
