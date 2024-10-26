@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package project2;
 
-/**
- *
- * @author emort
- */
 import Project1.Booking;
 import Project1.Customer;
 import java.awt.BorderLayout;
@@ -51,6 +43,8 @@ public final class HotelBookingGUI extends JFrame implements ActionListener {
         this.setLocationRelativeTo(null);
     }
 
+    // Initialization of Panels with Custom Layout and Components
+    // This method handles panel setups for GUI
     void initPanels() {
         // North Panel
         JPanel northPanel = new JPanel();
@@ -97,6 +91,7 @@ public final class HotelBookingGUI extends JFrame implements ActionListener {
         newCustomerButton.addActionListener(e -> handleNewCustomer());
     }
 
+    // Helper Method for Component Setup
     private void setupComponent(JComponent component, Dimension size, float alignment) {
         component.setMaximumSize(size);
         component.setAlignmentX(alignment);
@@ -115,18 +110,27 @@ public final class HotelBookingGUI extends JFrame implements ActionListener {
         }
     }
 
-    private void handleReturningCustomer() {
-        String phone = this.phoneField.getText();
-        currentCustomer = bookingHandler.getCustomerMap().get(phone);
-        if (currentCustomer != null) {
-            JOptionPane.showMessageDialog(this, "Welcome back, " + currentCustomer.getName() + "! You qualify for a complimentary spa session.", "Returning Customer", JOptionPane.INFORMATION_MESSAGE);
-            showBookingForm();
-        } else {
-            JOptionPane.showMessageDialog(this, "Phone number not found. Please continue as a new customer.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+    // Handles Logic for Returning Customers
+    // got help from chat gpt
+    private boolean isReturningCustomer = false;  // Flag to indicate returning customer
 
+    private void handleReturningCustomer() {
+    String phone = this.phoneField.getText();
+    currentCustomer = bookingHandler.getCustomerMap().get(phone);
+    if (currentCustomer != null) {
+        isReturningCustomer = true;  // Set flag to true for returning customers
+        JOptionPane.showMessageDialog(this, "Welcome back, " + currentCustomer.getName() + "! You qualify for a complimentary spa session.", "Returning Customer", JOptionPane.INFORMATION_MESSAGE);
+        showBookingForm();
+    } else {
+        JOptionPane.showMessageDialog(this, "Phone number not found. Please continue as a new customer.", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+
+    // Handles Logic for New Customers
+    // got help from chat gpt
     private void handleNewCustomer() {
+        isReturningCustomer = false;
         String phone = this.phoneField.getText();
         if (bookingHandler.getCustomerMap().containsKey(phone)) {
             JOptionPane.showMessageDialog(this, "Phone number already exists. Please check your number or contact support.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -167,6 +171,7 @@ public final class HotelBookingGUI extends JFrame implements ActionListener {
         formPanel.repaint();
     }
 
+    // Shows the Booking Form for Room Selection
     private void showBookingForm() {
         formPanel.removeAll();
 
@@ -193,19 +198,22 @@ public final class HotelBookingGUI extends JFrame implements ActionListener {
         formPanel.repaint();
     }
 
+    // Handles Room Booking Logic
+    //got help from chat gpt
     private void handleBooking() {
-        String roomType = this.roomTypeComboBox.getSelectedItem().toString();
-        int nights = Integer.parseInt(this.nightsField.getText());
-        Booking booking = bookingHandler.createBooking(currentCustomer.getPhoneNumber(), roomType, nights);
-        if (booking != null) {
-            JOptionPane.showMessageDialog(this, booking.confirmBooking(), "Booking Confirmation", JOptionPane.INFORMATION_MESSAGE);
-            if (currentCustomer != null) {
-                JOptionPane.showMessageDialog(this, "Check the reception to book your free spa session after you have checked in.", "Complimentary Spa", JOptionPane.INFORMATION_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "No available rooms of the selected type.", "Booking Error", JOptionPane.ERROR_MESSAGE);
+    String roomType = this.roomTypeComboBox.getSelectedItem().toString();
+    int nights = Integer.parseInt(this.nightsField.getText());
+    Booking booking = bookingHandler.createBooking(currentCustomer.getPhoneNumber(), roomType, nights);
+    if (booking != null) {
+        JOptionPane.showMessageDialog(this, booking.confirmBooking(), "Booking Confirmation", JOptionPane.INFORMATION_MESSAGE);
+        // Offer spa session only to returning customers
+        if (isReturningCustomer) {
+            JOptionPane.showMessageDialog(this, "Check the reception to book your free spa session after you have checked in.", "Complimentary Spa", JOptionPane.INFORMATION_MESSAGE);
         }
+    } else {
+        JOptionPane.showMessageDialog(this, "No available rooms of the selected type.", "Booking Error", JOptionPane.ERROR_MESSAGE);
     }
+}
 
     public static void main(String[] args) {
         HotelBookingGUI cf = new HotelBookingGUI();
