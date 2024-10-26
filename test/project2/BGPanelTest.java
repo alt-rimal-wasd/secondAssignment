@@ -1,21 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit4TestClass.java to edit this template
- */
 package project2;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-/**
- *
- * @author emort
- */
 public class BGPanelTest {
 
     public BGPanelTest() {
@@ -37,17 +29,18 @@ public class BGPanelTest {
     public void tearDown() {
     }
 
-    /**
-     * Test of paintComponent method, of class BGPanel.
-     */
+    // Test of paintComponent method, of class BGPanel.
+    //got help from chat gpt
     @Test
     public void testPaintComponent() {
         System.out.println("paintComponent");
-        Graphics g = null;
+
+        // Create a BufferedImage to get a Graphics object
+        BufferedImage bufferedImage = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = bufferedImage.getGraphics();
+
         BGPanel instance = new BGPanel();
         instance.paintComponent(g);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
 }
