@@ -1,8 +1,17 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package project2;
 
 import java.sql.ResultSet;
 
+/**
+ *
+ * @author emort
+ */
 public class HotelBookingMain {
+
     public static void main(String[] args) {
         Info info = new Info();
         info.connectHotelDB(); // Set up database tables

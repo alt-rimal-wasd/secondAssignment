@@ -1,5 +1,13 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package project2;
 
+/**
+ *
+ * @author emort
+ */
 import Project1.Booking;
 import Project1.Customer;
 import java.awt.BorderLayout;
@@ -11,6 +19,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public final class HotelBookingGUI extends JFrame implements ActionListener {
+
     private JButton startButton;
     private JTextField phoneField;
     private JButton returningCustomerButton;
@@ -183,7 +192,7 @@ public final class HotelBookingGUI extends JFrame implements ActionListener {
         formPanel.revalidate();
         formPanel.repaint();
     }
-    
+
     private void handleBooking() {
         String roomType = this.roomTypeComboBox.getSelectedItem().toString();
         int nights = Integer.parseInt(this.nightsField.getText());

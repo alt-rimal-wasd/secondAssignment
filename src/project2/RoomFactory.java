@@ -9,12 +9,12 @@ import Project1.Room;
 import Project1.SingleRoom;
 import Project1.Suite;
 
-
 /**
  *
  * @author emort
  */
 public class RoomFactory {
+
     public static Room createRoom(String type, String roomNumber, double price) {
         switch (type.toLowerCase()) {
             case "single":
@@ -28,4 +28,3 @@ public class RoomFactory {
         }
     }
 }
-
