@@ -48,7 +48,7 @@ public class Info {
 
     // Insert room data into the ROOM table
     private void insertRoomData() throws SQLException {
-        conn.setAutoCommit(false); // Start transaction
+        conn.setAutoCommit(false);
         try {
             String[] roomInserts = {
                 "('s001', 'Single', 100.0, TRUE)",
@@ -85,7 +85,7 @@ public class Info {
             for (String roomInsert : roomInserts) {
                 this.statement.executeUpdate("INSERT INTO ROOM VALUES " + roomInsert);
             }
-            conn.commit(); // Commit transaction
+            conn.commit();
         } catch (SQLException ex) {
             conn.rollback(); // Rollback transaction if any errors occur
             System.out.println("Error inserting room data: " + ex.getMessage());
@@ -96,7 +96,7 @@ public class Info {
 
     // Insert customer data into the CUSTOMER table
     private void insertCustomerData() throws SQLException {
-        conn.setAutoCommit(false); // Start transaction
+        conn.setAutoCommit(false);
         try {
             String[] customerInserts = {
                 "('c001', 'MATT', '0211111113', 'MATT_BRADLEY@EMAIL.COM')",
@@ -113,7 +113,7 @@ public class Info {
             for (String customerInsert : customerInserts) {
                 this.statement.executeUpdate("INSERT INTO CUSTOMER VALUES " + customerInsert);
             }
-            conn.commit(); // Commit transaction
+            conn.commit();
         } catch (SQLException ex) {
             conn.rollback(); // Rollback transaction if any errors occur
             System.out.println("Error inserting customer data: " + ex.getMessage());

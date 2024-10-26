@@ -5,7 +5,7 @@ import Project1.Room;
 import Project1.SingleRoom;
 import Project1.Suite;
 
-public class RoomFactory {
+public class CreateRoom {
     
     // method to create a room of the specified type
     public static Room createRoom(String type, String roomNumber, double price) {
