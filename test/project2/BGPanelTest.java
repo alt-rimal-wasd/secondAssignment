@@ -17,22 +17,22 @@ import static org.junit.Assert.*;
  * @author emort
  */
 public class BGPanelTest {
-    
+
     public BGPanelTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -49,5 +49,5 @@ public class BGPanelTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
-    
+
 }

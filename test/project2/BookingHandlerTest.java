@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package project2;
 
 import Project1.Booking;
@@ -8,7 +12,12 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ *
+ * @author emort
+ */
 public class BookingHandlerTest {
+
     private BookingHandler bookingHandler;
 
     @Before

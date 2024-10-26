@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package project2;
 
 import Project1.Room;
@@ -7,8 +11,12 @@ import Project1.Suite;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+/**
+ *
+ * @author emort
+ */
 public class RoomFactoryTest {
-    
+
     @Test
     public void testCreateSingleRoom() {
         Room room = RoomFactory.createRoom("single", "s001", 100.0);
