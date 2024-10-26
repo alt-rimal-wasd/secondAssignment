@@ -7,7 +7,7 @@ package project2;
 import Project1.Booking;
 import Project1.Customer;
 import Project1.Room;
-import project2.RoomFactory;
+import project2.CreateRoom;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -46,7 +46,7 @@ public class BookingHandlerTest {
     public void testCreateBooking() {
         Customer customer = new Customer("Jane Doe", "0987654321", "jane.doe@example.com");
         bookingHandler.addCustomer(customer);
-        Room room = RoomFactory.createRoom("single", "s001", 100.0);
+        Room room = CreateRoom.createRoom("single", "s001", 100.0);
         bookingHandler.getRoomsMap().put("s001", room);
 
         System.out.println("Created room instance: " + room);
@@ -62,7 +62,7 @@ public class BookingHandlerTest {
     public void testCreateBookingWithUnavailableRoom() {
         Customer customer = new Customer("Jane Doe", "0987654321", "jane.doe@example.com");
         bookingHandler.addCustomer(customer);
-        Room room = RoomFactory.createRoom("single", "s001", 100.0);
+        Room room = CreateRoom.createRoom("single", "s001", 100.0);
         room.setAvailable(false); // Set room to unavailable
         bookingHandler.getRoomsMap().put("s001", room);
 
