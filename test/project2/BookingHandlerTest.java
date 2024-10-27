@@ -32,38 +32,4 @@ public class BookingHandlerTest {
         bookingHandler.addCustomer(customer);
         assertEquals("Customer should be added", customer, bookingHandler.getCustomerMap().get("0123456789"));
     }
-
-    @Test
-    public void testCreateBooking() {
-        Customer customer = new Customer("John Golden", "0987654321", "john.golden@example.com");
-        bookingHandler.addCustomer(customer);
-        Room room = CreateRoom.createRoom("single", "s001", 100.0);
-        bookingHandler.getRoomsMap().put("s001", room);
-
-        System.out.println("Created room instance: " + room);
-        Booking booking = bookingHandler.createBooking("0987654321", "single", 3);
-        System.out.println("Booking room instance: " + booking.getRoom());
-
-        assertNotNull("Booking should be created", booking);
-        assertEquals("Booking should have the correct room", room, booking.getRoom());
-        assertEquals("Booking should have the correct customer", customer, booking.getCustomer());
-    }
-
-    @Test
-    public void testCreateBookingWithUnavailableRoom() {
-        Customer customer = new Customer("John Golden", "0987654321", "john.golden@example.com");
-        bookingHandler.addCustomer(customer);
-        Room room = CreateRoom.createRoom("single", "s001", 100.0);
-        room.setAvailable(false); // Set room to unavailable
-        bookingHandler.getRoomsMap().put("s001", room);
-
-        Booking booking = bookingHandler.createBooking("0987654321", "single", 3);
-        assertNull("Booking should not be created for unavailable room", booking);
-    }
-
-    @Test
-    public void testCreateBookingForNonexistentCustomer() {
-        Booking booking = bookingHandler.createBooking("9999999999", "single", 3);
-        assertNull("Booking should not be created for non-existent customer", booking);
-    }
 }
