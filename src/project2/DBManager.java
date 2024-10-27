@@ -18,7 +18,7 @@ public class DBManager {
     private static final String PASSWORD = "pdc";
      */
     // Embedded database URL
-    private static final String EMBEDDED_URL = "jdbc:derby:project2;create=true";
+    private static final String EMBEDDED_URL = "jdbc:derby:project2DB;create=true";
 
     private DBManager() {
         establishConnection();
