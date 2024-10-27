@@ -65,26 +65,26 @@ public class DBManager {
     }
 
     public ResultSet queryDB(String sql) {
-    Connection connection = this.conn;
-    Statement statement = null;
-    ResultSet resultSet = null;
-    try {
-        statement = connection.createStatement();
-        resultSet = statement.executeQuery(sql);
-    } catch (SQLException ex) {
-        System.out.println(ex.getMessage());
+        Connection connection = this.conn;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return resultSet;
     }
-    return resultSet;
-}
 
-public void updateDB(String sql) {
-    Connection connection = this.conn;
-    Statement statement = null;
-    try {
-        statement = connection.createStatement();
-        statement.executeUpdate(sql);
-    } catch (SQLException ex) {
-        System.out.println(ex.getMessage());
+    public void updateDB(String sql) {
+        Connection connection = this.conn;
+        Statement statement = null;
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate(sql);
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
-}
 }
