@@ -1,3 +1,4 @@
+// got help from chat Gpt and co-Pilot to debugg the codes.
 package project2;
 
 import Project1.Booking;
@@ -7,6 +8,8 @@ import Project1.Room;
 import Project1.SingleRoom;
 import Project1.Suite;
 import Project1.fileManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +37,20 @@ public class BookingHandler {
     public void addCustomer(Customer customer) {
         customerMap.put(customer.getPhoneNumber(), customer);
         fileManager.writeCustomerInfo((HashMap<String, Customer>) customerMap);
+
+        // Update the database
+        try {
+            DBManager dbManager = DBManager.getInstance();
+            Statement statement = dbManager.getConnection().createStatement();
+            String sql = "INSERT INTO CUSTOMER (CUSTOMERID, NAME, PHONE, EMAIL) VALUES ('" 
+                        + customer.getPhoneNumber() + "', '" 
+                        + customer.getName() + "', '" 
+                        + customer.getPhoneNumber() + "', '" 
+                        + customer.getEmail() + "')";
+            statement.executeUpdate(sql);
+        } catch (SQLException ex) {
+            System.out.println("Error inserting customer into database: " + ex.getMessage());
+        }
     }
 
     // Create a booking if the customer and room are valid and available
@@ -42,7 +59,6 @@ public class BookingHandler {
         if (customer == null) {
             return null; // Customer does not exist
         }
-
         Room selectedRoom = selectRoomByType(roomType);
         if (selectedRoom != null && selectedRoom.isAvailable()) {
             System.out.println("Selected room instance: " + selectedRoom);
@@ -51,8 +67,7 @@ public class BookingHandler {
         return null;
     }
 
-    // Select a room by type and check its availability
-    //got help from chat gpt 
+    // Select a room by type and check its availability. got help from co-pilot.
     private Room selectRoomByType(String roomType) {
         return roomsMap.values().stream()
                 .filter(room -> {
