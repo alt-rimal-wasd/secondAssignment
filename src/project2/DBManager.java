@@ -7,11 +7,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class DBManager {
+
     private static DBManager instance;
     private Connection conn;
+
+    /*
+    //local server
     private static final String URL = "jdbc:derby://localhost:1527/project2;create=true";
     private static final String USER_NAME = "pdc";
     private static final String PASSWORD = "pdc";
+     */
+    // Embedded database URL
+    private static final String EMBEDDED_URL = "jdbc:derby:project2;create=true";
 
     private DBManager() {
         establishConnection();
@@ -32,9 +39,13 @@ public class DBManager {
     private void establishConnection() {
         if (this.conn == null) {
             try {
-                Class.forName("org.apache.derby.jdbc.ClientDriver");// got help from chat gpt
-                conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
-                System.out.println(URL + " connected successfully.");
+                // Load the Derby embedded driver
+                Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+
+                // Connect to embedded DB
+                conn = DriverManager.getConnection(EMBEDDED_URL);
+
+                System.out.println(EMBEDDED_URL + " connected successfully.");
             } catch (ClassNotFoundException ex) {
                 System.out.println("Driver not found: " + ex.getMessage());
             } catch (SQLException ex) {
@@ -54,24 +65,26 @@ public class DBManager {
     }
 
     public ResultSet queryDB(String sql) {
-        Statement statement;
-        ResultSet resultSet = null;
-        try {
-            statement = conn.createStatement();
-            resultSet = statement.executeQuery(sql);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return resultSet;
+    Connection connection = this.conn;
+    Statement statement = null;
+    ResultSet resultSet = null;
+    try {
+        statement = connection.createStatement();
+        resultSet = statement.executeQuery(sql);
+    } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
     }
+    return resultSet;
+}
 
-    public void updateDB(String sql) {
-        Statement statement;
-        try {
-            statement = conn.createStatement();
-            statement.executeUpdate(sql);
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+public void updateDB(String sql) {
+    Connection connection = this.conn;
+    Statement statement = null;
+    try {
+        statement = connection.createStatement();
+        statement.executeUpdate(sql);
+    } catch (SQLException ex) {
+        System.out.println(ex.getMessage());
     }
+}
 }
