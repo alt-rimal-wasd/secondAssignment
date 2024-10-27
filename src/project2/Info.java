@@ -20,8 +20,8 @@ public class Info {
     public void connectHotelDB() {
         try {
             this.statement = conn.createStatement();
-            this.dropTablesIfExists("ROOM");
-            this.dropTablesIfExists("CUSTOMER");
+            this.checkExistedTable("ROOM");
+            this.checkExistedTable("CUSTOMER");
             this.createTables();
             this.insertRoomData();
             this.insertCustomerData();
@@ -31,14 +31,19 @@ public class Info {
     }
 
     // Check if table exists and drop it if it does
-    private void dropTablesIfExists(String tableName) throws SQLException {
-        DatabaseMetaData dbmd = this.conn.getMetaData();
-        ResultSet rs = dbmd.getTables(null, null, tableName.toUpperCase(), null);
-        if (rs.next()) {
-            this.statement.executeUpdate("DROP TABLE " + tableName);
-            System.out.println("Table " + tableName + " has been deleted.");
+    private void checkExistedTable(String tableName) {
+        try {
+            DatabaseMetaData dbmd = this.conn.getMetaData();
+            ResultSet rs = dbmd.getTables(null, null, tableName.toUpperCase(), null);
+            if (rs.next()) {
+                this.statement.executeUpdate("DROP TABLE " + tableName);
+                System.out.println("Table " + tableName + " has been deleted.");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
     }
+
 
     // Create ROOM and CUSTOMER tables
     private void createTables() throws SQLException {
@@ -87,10 +92,10 @@ public class Info {
             }
             conn.commit();
         } catch (SQLException ex) {
-            conn.rollback(); // Rollback transaction if any errors occur
+            conn.rollback(); // Rollback transaction if any errors occur. co-pilot suggestion
             System.out.println("Error inserting room data: " + ex.getMessage());
         } finally {
-            conn.setAutoCommit(true); // Restore default auto-commit behavior
+            conn.setAutoCommit(true); // Restore default auto-commit behavior. co-pilot suggestion
         }
     }
 
@@ -115,10 +120,10 @@ public class Info {
             }
             conn.commit();
         } catch (SQLException ex) {
-            conn.rollback(); // Rollback transaction if any errors occur
+            conn.rollback(); // Rollback transaction if any errors occur.co-pilot suggestion
             System.out.println("Error inserting customer data: " + ex.getMessage());
         } finally {
-            conn.setAutoCommit(true); // Restore default auto-commit behavior
+            conn.setAutoCommit(true); // Restore default auto-commit behavior. co-pilot suggestion
         }
     }
 
@@ -132,21 +137,7 @@ public class Info {
         }
         return rs;
     }
-
-    // Check if a table exists and drop it
-    private void checkExistedTable(String name) {
-        try {
-            DatabaseMetaData dbmd = this.conn.getMetaData();
-            ResultSet rs = dbmd.getTables(null, null, name.toUpperCase(), null);
-            if (rs.next()) {
-                this.statement.executeUpdate("DROP TABLE " + name);
-                System.out.println("Table " + name + " has been deleted.");
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-
+    
     // Close the database connection
     public void closeConnection() {
         this.dbManager.closeConnections();
