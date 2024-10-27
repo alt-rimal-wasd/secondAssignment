@@ -1,21 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package project2;
 
 import Project1.Booking;
 import Project1.Customer;
 import Project1.Room;
-import project2.CreateRoom;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author emort
- */
 public class BookingHandlerTest {
 
     private BookingHandler bookingHandler;
@@ -37,14 +28,14 @@ public class BookingHandlerTest {
 
     @Test
     public void testAddCustomer() {
-        Customer customer = new Customer("John Doe", "0123456789", "john.doe@example.com");
+        Customer customer = new Customer("James Smith", "0123456789", "james.smith@example.com");
         bookingHandler.addCustomer(customer);
         assertEquals("Customer should be added", customer, bookingHandler.getCustomerMap().get("0123456789"));
     }
 
     @Test
     public void testCreateBooking() {
-        Customer customer = new Customer("Jane Doe", "0987654321", "jane.doe@example.com");
+        Customer customer = new Customer("John Golden", "0987654321", "john.golden@example.com");
         bookingHandler.addCustomer(customer);
         Room room = CreateRoom.createRoom("single", "s001", 100.0);
         bookingHandler.getRoomsMap().put("s001", room);
@@ -60,7 +51,7 @@ public class BookingHandlerTest {
 
     @Test
     public void testCreateBookingWithUnavailableRoom() {
-        Customer customer = new Customer("Jane Doe", "0987654321", "jane.doe@example.com");
+        Customer customer = new Customer("John Golden", "0987654321", "john.golden@example.com");
         bookingHandler.addCustomer(customer);
         Room room = CreateRoom.createRoom("single", "s001", 100.0);
         room.setAvailable(false); // Set room to unavailable
